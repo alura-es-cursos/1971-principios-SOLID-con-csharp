@@ -1,0 +1,99 @@
+@model IEnumerable<Subasta>
+
+@{
+    ViewData["Title"] = "Subasta";
+    var termino = ViewData["termino"];
+}
+
+<div class="card">
+    <div class="card-header d-flex">
+        <h4 class="flex-grow-1">Subasta</h4>
+        <a class="btn btn-outline-primary" asp-controller="subasta" asp-action="Insert" title="Inclusión">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Nueva
+        </a>
+    </div>
+    <div class="card-body">
+        <form class="form-inline mb-3" asp-controller="subasta" asp-action="Pesquisa" method="get">
+            <input name="termino" class="form-control flex-grow-1"
+                    value="@termino"
+                    placeholder="Buscar por título, categoría o descripción..." />
+            <button class="btn btn-outline-secondary ml-2">
+                <i class="fa fa-search"></i>
+                <span class="d-none d-md-inline">Buscar</span>
+            </button>
+        </form>
+        <div class="row">
+            <div class="col-12">
+                <table class="col-12 table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Título</th>
+                            <th>Situación</th>
+                            <th>Descripción</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var subasta in Model)
+                        {
+                            <tr class="row-subasta-@subasta.Id">
+                                <td>@subasta.Id</td>
+                                <td>@subasta.Titulo</td>
+                                <td>
+                                    @switch (subasta.Status)
+                                    {
+                                        case StatusSubasta.Borrador:
+                                            <span>Borrador</span>
+                                            break;
+                                        case StatusSubasta.Proceso:
+                                            <span>Proceso iniciado el @subasta.Inicio.Value.ToString("dd/MM/yyyy hh:mm")</span>
+                                            break;
+                                        case StatusSubasta.Finalizado:
+                                            <span>Finalizado el @subasta.Termino.Value.ToString("dd/MM/yyyy hh:mm")</span>
+                                            break;
+                                        default:
+                                            <span>@subasta.Status</span>
+                                            break;
+                                    }
+                                </td>
+                                <td>@subasta.Descripcion</td>
+                                <td>
+                                    @if (subasta.Status ==StatusSubasta.Borrador)
+                                    {
+                                        <a class="btn btn-light" asp-controller="subasta" asp-action="Edit" asp-route-id="@subasta.Id" title="Edição">
+                                            <i class="fa fa-pencil-alt" aria-hidden="true"></i>
+                                        </a>
+                                        <form asp-action="Inicia">
+                                            <input type="hidden" name="id" value="@subasta.Id" />
+                                            <button class="btn btn-light" title="Iniciar Pregão">
+                                                <i class="fas fa-play-circle"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                    @if (subasta.Status !=StatusSubasta.Proceso)
+                                    {
+                                        <a class="btn btn-light btnRemovesubasta" data-id="@subasta.Id" data-titulo="@subasta.Titulo" title="Exclusão">
+                                            <i class="fa fa-trash" aria-hidden="true"></i>
+                                        </a>
+                                    }
+                                    @if (subasta.Status ==StatusSubasta.Proceso)
+                                    {
+                                        <form asp-action="Finaliza">
+                                            <input type="hidden" name="id" value="@subasta.Id" />
+                                            <button class="btn btn-light" title="Finalizar Proceso">
+                                                <i class="fas fa-stop-circle"></i>
+                                            </button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

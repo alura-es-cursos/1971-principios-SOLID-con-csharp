@@ -1,0 +1,23 @@
+﻿@model IEnumerable<Subasta>
+
+@{
+    Layout = "_AreaPublica";
+    ViewData["Title"] = "Busca";
+}
+
+<h1>Busqueda realizada por "@ViewData["termino"]"</h1>
+<h3>Subastas encontradas</h3>
+<section class="tiles">
+    @foreach (var subasta in Model)
+    {
+        <article class="subasta">
+            <span class="image">
+                <img src="@subasta.PosterUrl" alt="@subasta.Titulo" />
+            </span>
+            <h4>@subasta.Titulo</h4>
+            <div class="content">
+                <p>@subasta.Descripcion.Substring(0, 100)</p>
+            </div>
+        </article>
+    }
+</section>

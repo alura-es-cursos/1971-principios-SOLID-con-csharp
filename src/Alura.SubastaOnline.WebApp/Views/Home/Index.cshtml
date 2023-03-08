@@ -1,0 +1,28 @@
+﻿@model IEnumerable<CategoriaConInfoSubasta>
+
+@{
+    Layout = "_AreaPublica";
+    ViewData["Title"] = "Home Page";
+}
+
+<header>
+    <h1>Bienvenido a Auksjon, su sitio web de subastas.</h1>
+    <p>Etiam quis viverra lorem, in semper lorem. Sed nisl arcu euismod sit amet nisi euismod sed cursus arcu elementum ipsum arcu vivamus quis venenatis orci lorem ipsum et magna feugiat veroeros aliquam. Lorem ipsum dolor sit amet nullam dolore.</p>
+</header>
+<section class="tiles">
+    @foreach (var categ in Model)
+    {
+        var estilo = $"style{categ.Id}";
+        <article class="@estilo">
+            <span class="image">
+                <img src="@categ.Imagen" alt="@categ.Descripcion" />
+            </span>
+            <a asp-action="Categoria" asp-controller="Home" asp-route-id="@categ.Id" >
+                <h2>@categ.Descripcion</h2>
+                <div class="content">
+                    <p>@categ.EnProceso subastas en proceso.</p>
+                </div>
+            </a>
+        </article>
+    }
+</section>

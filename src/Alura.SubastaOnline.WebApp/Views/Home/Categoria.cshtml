@@ -1,0 +1,26 @@
+﻿@model Categoria
+
+@{
+    Layout = "_AreaPublica";
+    ViewData["Title"] = "Categoria";
+}
+
+<h1>@Model.Descripcion</h1>
+<span class="image main img-categoria">
+    <img src="~/@Model.Imagen" alt="@Model.Descripcion" />
+</span>
+<h3>Subastas en proceso</h3>
+<section class="tiles">
+    @foreach (var subasta in Model.Subastas.Where(l => l.Status == StatusSubasta.Proceso))
+    {
+    <article class="subasta">
+        <span class="image">
+            <img src="@subasta.PosterUrl" alt="@subasta.Titulo" />
+        </span>
+        <h4>@subasta.Titulo</h4>
+        <div class="content">
+            <p>@subasta.Descripcion.Substring(0,100)</p>
+        </div>
+    </article>
+}
+</section>
