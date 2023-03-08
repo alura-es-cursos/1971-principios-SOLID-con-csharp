@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Alura.SubastaOnline.WebApp.Models;
-using Alura.SubastaOnline.WebApp.Data;
+using Alura.SubastaOnline.WebApp.Data.EFCore;
 
 namespace Alura.SubastaOnline.WebApp.Seeding
 {

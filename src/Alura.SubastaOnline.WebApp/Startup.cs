@@ -1,3 +1,5 @@
+using Alura.SubastaOnline.WebApp.Data;
+using Alura.SubastaOnline.WebApp.Data.EFCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -7,6 +9,7 @@ namespace Alura.SubastaOnline.WebApp
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddTransient<ISubastasDao, SubastasDaoConEFCore>();
             services
                 .AddControllersWithViews()
                 .AddNewtonsoftJson(options => 

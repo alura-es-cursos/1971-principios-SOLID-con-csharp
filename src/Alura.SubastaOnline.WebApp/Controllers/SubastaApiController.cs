@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Alura.SubastaOnline.WebApp.Models;
 using Alura.SubastaOnline.WebApp.Data;
-using System.Linq;
-using System.Collections.Generic;
+
 
 namespace Alura.SubastaOnline.WebApp.Controllers
 {
@@ -12,11 +10,11 @@ namespace Alura.SubastaOnline.WebApp.Controllers
     public class SubastaApiController : ControllerBase
     {
 
-        SubastasDao _dao;
+        ISubastasDao _dao;
 
-        public SubastaApiController()
+        public SubastaApiController(ISubastasDao dao)
         {
-            _dao = new SubastasDao();
+            _dao = dao;
         }
         [HttpGet]
         public IActionResult EndpointGetSubastas()

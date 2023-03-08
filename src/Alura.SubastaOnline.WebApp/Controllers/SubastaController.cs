@@ -1,21 +1,19 @@
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Alura.SubastaOnline.WebApp.Data;
 using Alura.SubastaOnline.WebApp.Models;
 using System;
-using Newtonsoft.Json.Linq;
-using System.Collections.Generic;
+using Alura.SubastaOnline.WebApp.Data;
 
 namespace Alura.SubastaOnline.WebApp.Controllers
 {
     public class SubastaController : Controller
     {
-        SubastasDao _dao;
+        ISubastasDao _dao;
 
-        public SubastaController()
+        public SubastaController(ISubastasDao dao)
         {
-            _dao = new SubastasDao();
+            _dao = dao;
         }
         public IActionResult Index()
         {

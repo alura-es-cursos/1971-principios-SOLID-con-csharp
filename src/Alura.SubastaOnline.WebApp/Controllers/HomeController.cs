@@ -1,9 +1,9 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Alura.SubastaOnline.WebApp.Data;
 using Alura.SubastaOnline.WebApp.Models;
 using Microsoft.AspNetCore.Routing;
+using Alura.SubastaOnline.WebApp.Data.EFCore;
 
 namespace Alura.SubastaOnline.WebApp.Controllers
 {
