@@ -13,14 +13,16 @@ namespace Alura.SubastaOnline.WebApp.Data.EFCore
         {
             _context = new AppDbContext();
         }
-        Categoria ICategoriaDao.BuscarCategoriaPorId(int id)
+
+    
+        Categoria IQuery<Categoria>.BuscarPorId(int id)
         {
             return _context.Categorias.Include(c => c.Subastas).First(c => c.Id == id);
         }
 
-        IEnumerable<Categoria> ICategoriaDao.BuscarTodasCategorias()
+        IEnumerable<Categoria> IQuery<Categoria>.BuscarTodos()
         {
-            return _context.Categorias.ToList();
+            return _context.Categorias.Include(c => c.Subastas);
         }
     }
 }

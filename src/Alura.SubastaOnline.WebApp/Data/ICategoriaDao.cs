@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Alura.SubastaOnline.WebApp.Data
 {
-    public interface ICategoriaDao
+    public interface ICategoriaDao : IQuery<Categoria>
     {
-        public Categoria BuscarCategoriaPorId(int id);
 
-        public IEnumerable<Categoria> BuscarTodasCategorias();
+
+        
     }
 }

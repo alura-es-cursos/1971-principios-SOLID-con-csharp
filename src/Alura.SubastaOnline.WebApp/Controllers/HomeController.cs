@@ -41,7 +41,7 @@ namespace Alura.SubastaOnline.WebApp.Controllers
         [Route("[controller]/Busca")]
         public IActionResult Busca(string termino)
         {
-            ViewData["termo"] = termino;
+            ViewData["termino"] = termino;
             var subastas = _service.BusquedaSubastasPorTermino(termino);
             return View(subastas);
         }

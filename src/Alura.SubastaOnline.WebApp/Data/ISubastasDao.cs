@@ -3,18 +3,8 @@ using System.Collections.Generic;
 
 namespace Alura.SubastaOnline.WebApp.Data
 {
-    public interface ISubastasDao
+    public interface ISubastasDao : ICommand<Subasta>, IQuery<Subasta>
     {
         
-        public Subasta BuscarSubastaPorId(int id);
-
-
-        public IEnumerable<Subasta> BuscarTodasLasSubastas();
-
-        public void IncluirSubasta(Subasta obj);
-
-        public void ActualizarSubasta(Subasta obj);
-
-        public void EliminarSubasta(Subasta obj);
     }
 }

@@ -14,28 +14,28 @@ namespace Alura.SubastaOnline.WebApp.Data.EFCore
             _context = new AppDbContext();
         }
 
-        public Subasta BuscarSubastaPorId(int id)
+        public Subasta BuscarPorId(int id)
         {
             return _context.Subastas.First(s => s.Id == id);
         }
         
 
-        public IEnumerable<Subasta> BuscarTodasLasSubastas() =>
+        public IEnumerable<Subasta> BuscarTodos() =>
             _context.Subastas.Include(l => l.Categoria);
 
-        public void IncluirSubasta(Subasta obj)
+        public void Incluir(Subasta obj)
         {
             _context.Subastas.Add(obj);
             _context.SaveChanges();
         }
 
-        public void ActualizarSubasta(Subasta obj)
+        public void Actualizar(Subasta obj)
         {
             _context.Subastas.Update(obj);
             _context.SaveChanges();
         }
 
-        public void EliminarSubasta(Subasta obj)
+        public void Eliminar(Subasta obj)
         {
             _context.Subastas.Remove(obj);
             _context.SaveChanges();
