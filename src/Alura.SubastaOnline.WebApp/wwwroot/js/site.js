@@ -1,13 +1,13 @@
 ﻿function anexaEventoNoCliqueBotoesRemoveLeilao() {
-    let botoesRemocaoLeilao = document.querySelectorAll('.btnRemovesubasta');
+    let botoesRemocaoLeilao = document.querySelectorAll('.btnRemoveLeilao');
     botoesRemocaoLeilao.forEach(btn => $(btn).on('click', () => {
-        let subasta = $(btn).data();
-        if (window.confirm(`Confirma borrar la subasta ${subasta.titulo}?`)) {
+        let leilao = $(btn).data();
+        if (window.confirm(`Confirma a exclusão do leilão ${leilao.titulo}?`)) {
             jQuery.ajax({
-                url: `/Subasta/Remove/${subasta.id}`,
+                url: `/Leilao/Remove/${leilao.id}`,
                 method: 'post',
-                success: () => $(`.row-leilao-${subasta.id}`).hide('slow'),
-                error: () => window.alert('Ocurrió un erro al borrar')
+                success: () => $(`.row-leilao-${leilao.id}`).hide('slow'),
+                error: () => window.alert('Houve um erro ao excluir')
             });
         }
     }));

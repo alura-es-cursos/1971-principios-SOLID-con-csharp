@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Alura.SubastaOnline.WebApp.Models;
 using Alura.SubastaOnline.WebApp.Data;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace Alura.SubastaOnline.WebApp.Controllers
 {
@@ -9,25 +11,24 @@ namespace Alura.SubastaOnline.WebApp.Controllers
     [Route("/api/subastas")]
     public class SubastaApiController : ControllerBase
     {
-        AppDbContext _context;
+
+        SubastasDao _dao;
 
         public SubastaApiController()
         {
-            _context = new AppDbContext();
+            _dao = new SubastasDao();
         }
-
         [HttpGet]
         public IActionResult EndpointGetSubastas()
         {
-            var subastas = _context.Subastas
-                .Include(l => l.Categoria);
+            var subastas = _dao.BuscarTodasLasSubastas();
             return Ok(subastas);
         }
 
         [HttpGet("{id}")]
         public IActionResult EndpointGetSubastaById(int id)
         {
-            var subasta = _context.Subastas.Find(id);
+            var subasta = _dao.BuscarSubastaPorId(id);
             if (subasta == null)
             {
                 return NotFound();
@@ -38,29 +39,26 @@ namespace Alura.SubastaOnline.WebApp.Controllers
         [HttpPost]
         public IActionResult EndpointPostSubasta(Subasta subasta)
         {
-            _context.Subastas.Add(subasta);
-            _context.SaveChanges();
+            _dao.IncluirSubasta(subasta);
             return Ok(subasta);
         }
 
         [HttpPut]
         public IActionResult EndpointPutSubasta(Subasta subasta)
         {
-            _context.Subastas.Update(subasta);
-            _context.SaveChanges();
+            _dao.ActualizarSubasta(subasta);
             return Ok(subasta);
         }
 
         [HttpDelete("{id}")]
         public IActionResult EndpointDeleteSubasta(int id)
         {
-            var subasta = _context.Subastas.Find(id);
+            var subasta = _dao.BuscarSubastaPorId(id);
             if (subasta == null)
             {
                 return NotFound();
             }
-            _context.Subastas.Remove(subasta);
-            _context.SaveChanges();
+            _dao.EliminarSubasta(subasta);
             return NoContent();
         }
 

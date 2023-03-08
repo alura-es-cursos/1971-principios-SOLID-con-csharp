@@ -1,2 +1,2 @@
-# Proyecto del curso de SOLID con CSharp
+# Projeto para o curso de SOLID com CSharp
 
