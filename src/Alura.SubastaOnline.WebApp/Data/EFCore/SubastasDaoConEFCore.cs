@@ -18,10 +18,7 @@ namespace Alura.SubastaOnline.WebApp.Data.EFCore
         {
             return _context.Subastas.First(s => s.Id == id);
         }
-        public IEnumerable<Categoria> BuscarTodasCategorias()
-        {
-            return _context.Categorias.ToList();
-        }
+        
 
         public IEnumerable<Subasta> BuscarTodasLasSubastas() =>
             _context.Subastas.Include(l => l.Categoria);

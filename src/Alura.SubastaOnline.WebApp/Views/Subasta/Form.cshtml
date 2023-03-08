@@ -2,9 +2,9 @@
 
 @{
     IEnumerable<Categoria> categorias = (IEnumerable<Categoria>)ViewData["Categorias"];
-    ViewData["Title"] = $"Subasta - {ViewData["Operacao"]}";
+    ViewData["Title"] = $"Leilão - {ViewData["Operacao"]}";
     string operacao = ViewData["Operacao"].ToString();
-    bool edicao = operacao == "Edición";
+    bool edicao = operacao == "Edição";
 }
 
 <div class="card">

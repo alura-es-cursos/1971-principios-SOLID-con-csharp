@@ -4,31 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Alura.SubastaOnline.WebApp.Models;
 using Microsoft.AspNetCore.Routing;
 using Alura.SubastaOnline.WebApp.Data.EFCore;
+using Alura.SubastaOnline.WebApp.Services;
 
 namespace Alura.SubastaOnline.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        AppDbContext _context;
+        IProductoServices _service;
 
-        public HomeController()
+        public HomeController(IProductoServices service)
         {
-            _context = new AppDbContext();
+            _service = service;
         }
 
         public IActionResult Index()
         {
-            var categorias = _context.Categorias
-                .Include(c => c.Subastas)
-                .Select(c => new CategoriaComInfoLeilao
-                {
-                    Id = c.Id,
-                    Descripcion = c.Descripcion,
-                    Imagen = c.Imagen,
-                    EnBorrador = c.Subastas.Where(l => l.Status == StatusSubasta.Borrador).Count(),
-                    EnProceso = c.Subastas.Where(l => l.Status == StatusSubasta.Proceso).Count(),
-                    Finalizados = c.Subastas.Where(l => l.Status == StatusSubasta.Finalizado).Count(),
-                });
+            var categorias = _service.ConsultaCategoriasTotalPorStatus();
             return View(categorias);
         }
 
@@ -42,24 +33,17 @@ namespace Alura.SubastaOnline.WebApp.Controllers
         [Route("[controller]/Categoria/{categoria}")]
         public IActionResult Categoria(int categoria)
         {
-            var categ = _context.Categorias
-                .Include(c => c.Subastas)
-                .First(c => c.Id == categoria);
+            var categ = _service.ConsultaCategoriaPorIdConSubastas(categoria);
             return View(categ);
         }
 
         [HttpPost]
         [Route("[controller]/Busca")]
-        public IActionResult Busca(string termo)
+        public IActionResult Busca(string termino)
         {
-            ViewData["termo"] = termo;
-            var termoNormalized = termo.ToUpper();
-            var leiloes = _context.Subastas
-                .Where(c =>
-                    c.Titulo.ToUpper().Contains(termoNormalized) ||
-                    c.Descripcion.ToUpper().Contains(termoNormalized) ||
-                    c.Categoria.Descripcion.ToUpper().Contains(termoNormalized));
-            return View(leiloes);
+            ViewData["termo"] = termino;
+            var subastas = _service.BusquedaSubastasPorTermino(termino);
+            return View(subastas);
         }
     }
 }

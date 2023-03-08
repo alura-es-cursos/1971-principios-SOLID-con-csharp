@@ -10,11 +10,11 @@
         <h4 class="flex-grow-1">Subasta</h4>
         <a class="btn btn-outline-primary" asp-controller="subasta" asp-action="Insert" title="Inclusión">
             <i class="fa fa-plus" aria-hidden="true"></i>
-            Nueva
+            Novo
         </a>
     </div>
     <div class="card-body">
-        <form class="form-inline mb-3" asp-controller="subasta" asp-action="Pesquisa" method="get">
+        <form class="form-inline mb-3" asp-controller="subasta" asp-action="Buscar" method="get">
             <input name="termino" class="form-control flex-grow-1"
                     value="@termino"
                     placeholder="Buscar por título, categoría o descripción..." />

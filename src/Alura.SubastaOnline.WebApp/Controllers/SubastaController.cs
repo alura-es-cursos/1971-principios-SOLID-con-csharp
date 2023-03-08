@@ -4,28 +4,29 @@ using Microsoft.EntityFrameworkCore;
 using Alura.SubastaOnline.WebApp.Models;
 using System;
 using Alura.SubastaOnline.WebApp.Data;
+using Alura.SubastaOnline.WebApp.Services;
 
 namespace Alura.SubastaOnline.WebApp.Controllers
 {
     public class SubastaController : Controller
     {
-        ISubastasDao _dao;
+        IAdminServices _service;
 
-        public SubastaController(ISubastasDao dao)
+        public SubastaController(IAdminServices service)
         {
-            _dao = dao;
+            _service = service;
         }
         public IActionResult Index()
         {
-            var subastas = _dao.BuscarTodasLasSubastas();
+            var subastas = _service.ConsultaSubastas();
             return View(subastas);
         } 
 
         [HttpGet]
         public IActionResult Insert()
         {
-            ViewData["Categorias"] = _dao.BuscarTodasCategorias();
-            ViewData["Operacao"] = "Inclusão";
+            ViewData["Categorias"] = _service.ConsultaCategorias();
+            ViewData["Operacao"] = "Inclusión";
             return View("Form");
         }
 
@@ -34,20 +35,20 @@ namespace Alura.SubastaOnline.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _dao.IncluirSubasta(model);
+                _service.InsertaSubasta(model);
                 return RedirectToAction("Index");
             }
-            ViewData["Categorias"] = _dao.BuscarTodasCategorias();
-            ViewData["Operacao"] = "Inclusão";
+            ViewData["Categorias"] = _service.ConsultaCategorias();
+            ViewData["Operacao"] = "Inclusión";
             return View("Form", model);
         }
 
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            ViewData["Categorias"] = _dao.BuscarTodasCategorias();
-            ViewData["Operacao"] = "Edição";
-            var subasta = _dao.BuscarSubastaPorId(id);
+            ViewData["Categorias"] = _service.ConsultaCategorias();
+            ViewData["Operacao"] = "Edición";
+            var subasta = _service.ConsultaSubastaPorId(id);
             if (subasta == null) return NotFound();
             return View("Form", subasta);
         }
@@ -57,43 +58,41 @@ namespace Alura.SubastaOnline.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _dao.ActualizarSubasta(model);
+                _service.ModificaSubasta(model);
                 return RedirectToAction("Index");
             }
-            ViewData["Categorias"] = _dao.BuscarTodasCategorias();
-            ViewData["Operacao"] = "Edição";
+            ViewData["Categorias"] = _service.ConsultaCategorias();
+            ViewData["Operacao"] = "Edición";
             return View("Form", model);
         }
 
         [HttpPost]
         public IActionResult Inicia(int id)
         {
-            var subasta = _dao.BuscarSubastaPorId(id);
+            var subasta = _service.ConsultaSubastaPorId(id);
             if (subasta == null) return NotFound();
             if (subasta.Status != StatusSubasta.Borrador) return StatusCode(405);
-            _dao.ActualizarSubasta(subasta);
+            _service.IniciaProcesoDeSubastaConId(id);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public IActionResult Finaliza(int id)
         {
-            var subasta = _dao.BuscarSubastaPorId(id);
+            var subasta = _service.ConsultaSubastaPorId(id);
             if (subasta == null) return NotFound();
             if (subasta.Status != StatusSubasta.Proceso) return StatusCode(405);
-            subasta.Status = StatusSubasta.Finalizado;
-            subasta.Termino = DateTime.Now;
-            _dao.ActualizarSubasta(subasta);
+            _service.FinalizaProcesoDeSubastaConId(id);
             return RedirectToAction("Index");
         }
 
         [HttpPost]
         public IActionResult Remove(int id)
         {
-            var subasta = _dao.BuscarSubastaPorId(id);
+            var subasta = _service.ConsultaSubastaPorId(id);
             if (subasta == null) return NotFound();
             if (subasta.Status == StatusSubasta.Proceso) return StatusCode(405);
-            _dao.EliminarSubasta(subasta);
+            _service.EliminaSubasta(subasta);
             return NoContent();
         }
 
@@ -101,13 +100,13 @@ namespace Alura.SubastaOnline.WebApp.Controllers
         public IActionResult Pesquisa(string termo)
         {
             ViewData["termo"] = termo;
-            var leiloes = _dao.BuscarTodasLasSubastas()
+            var subastas = _service.ConsultaSubastas()
                 .Where(l => string.IsNullOrWhiteSpace(termo) || 
                     l.Titulo.ToUpper().Contains(termo.ToUpper()) || 
                     l.Descripcion.ToUpper().Contains(termo.ToUpper()) ||
                     l.Categoria.Descripcion.ToUpper().Contains(termo.ToUpper())
                 );
-            return View("Index", leiloes);
+            return View("Index", subastas);
         }
     }
 }

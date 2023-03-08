@@ -4,6 +4,7 @@
     {
         Borrador,
         Proceso,
-        Finalizado
+        Finalizado,
+        Archivado
     }
 }

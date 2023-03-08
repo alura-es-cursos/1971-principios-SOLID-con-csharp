@@ -8,8 +8,6 @@ namespace Alura.SubastaOnline.WebApp.Data
         
         public Subasta BuscarSubastaPorId(int id);
 
-        public IEnumerable<Categoria> BuscarTodasCategorias();
-
 
         public IEnumerable<Subasta> BuscarTodasLasSubastas();
 
